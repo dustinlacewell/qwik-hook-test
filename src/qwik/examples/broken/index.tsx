@@ -2,14 +2,15 @@ import { component$, $ } from '@builder.io/qwik';
 import { Child, type Item } from '../../Child';
 import { useDemo } from '../../demoContext';
 import { useCalculateDataBroken } from './useCalculateDataBroken';
+import brokenSource from './index.tsx?raw';
+import brokenHookSource from './useCalculateDataBroken.ts?raw';
 
 export const BrokenExample = component$(() => {
   const { itemsMapSig, layout } = useDemo();
 
-  // Plain hook compute (no useTask/useComputed)
   const rootItems = useCalculateDataBroken();
 
-  console.log('[BrokenPlainHookMap] render. mapSize=', itemsMapSig.value.size, 'order=', layout.instanceOrder, 'derived.len=', rootItems.length);
+  console.log('[BrokenExample] render. mapSize=', itemsMapSig.value.size, 'order=', layout.instanceOrder, 'derived.len=', rootItems.length);
 
   const load = $(() => {
     const m = new Map<number, Item>();
@@ -44,7 +45,10 @@ export const BrokenExample = component$(() => {
 
   return (
     <div class="space-y-2 rounded border border-red-800 p-3">
-      <h2 class="font-bold text-red-400">Broken (Plain hook, Map signal)</h2>
+      <h2 class="font-bold text-red-400">Broken</h2>
+      <p style={{ fontSize: '1rem' }}>
+        The parent component calculates some data using a "hook"(??) and passes it to a child component.
+      </p>
       <div class="flex gap-2">
         <button class="px-2 py-1 border rounded" onClick$={load}>Load</button>
         <button class="px-2 py-1 border rounded" onClick$={add}>Add</button>
@@ -57,6 +61,14 @@ export const BrokenExample = component$(() => {
           <pre class="text-sm">{JSON.stringify({ size: itemsMapSig.value.size, order: layout.instanceOrder }, null, 2)}</pre>
         </div>
         <Child items={rootItems} />
+      </div>
+      <div class="rounded border border-neutral-700 p-3">
+        <h3 class="font-bold mb-2">Source: examples/broken/index.tsx</h3>
+        <pre class="text-xs overflow-auto"><code>{brokenSource}</code></pre>
+      </div>
+      <div class="rounded border border-neutral-700 p-3">
+        <h3 class="font-bold mb-2">Source: examples/broken/useCalculateDataBroken.ts</h3>
+        <pre class="text-xs overflow-auto"><code>{brokenHookSource}</code></pre>
       </div>
     </div>
   );

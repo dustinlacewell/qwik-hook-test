@@ -1,25 +1,25 @@
 import { component$, $ } from '@builder.io/qwik';
 import { Child, type Item } from '../../Child';
 import { useDemo } from '../../demoContext';
+import workingSource from './index.tsx?raw';
 
 export const WorkingExample = component$(() => {
   const { itemsMapSig, layout } = useDemo();
 
-  // Inline compute from Map signal + layout store
   const rootItems = Array.from(itemsMapSig.value.values()).sort((a, b) => {
     const indexA = layout.instanceOrder.indexOf(a.id);
     const indexB = layout.instanceOrder.indexOf(b.id);
     return indexB - indexA;
   });
 
-  console.log('[WorkingMapInline] render. mapSize=', itemsMapSig.value.size, 'order=', layout.instanceOrder);
+  console.log('[WorkingExample] render. mapSize=', itemsMapSig.value.size, 'order=', layout.instanceOrder);
 
   const load = $(() => {
     const m = new Map<number, Item>();
     m.set(10, { id: 10, label: 'Alpha', order: 1 });
     m.set(20, { id: 20, label: 'Beta', order: 2 });
     m.set(30, { id: 30, label: 'Gamma', order: 0 });
-    itemsMapSig.value = m; // reassign -> reactive
+    itemsMapSig.value = m;
     layout.instanceOrder = [30, 20, 10];
   });
 
@@ -27,7 +27,7 @@ export const WorkingExample = component$(() => {
     const id = Math.floor(Math.random() * 1000) + 1;
     const m = new Map(itemsMapSig.value);
     m.set(id, { id, label: `Item ${id}`, order: Math.floor(Math.random() * 5) });
-    itemsMapSig.value = m; // reassign
+    itemsMapSig.value = m;
     layout.instanceOrder = [id, ...layout.instanceOrder];
   });
 
@@ -47,7 +47,10 @@ export const WorkingExample = component$(() => {
 
   return (
     <div class="space-y-2 rounded border border-neutral-700 p-3">
-      <h2 class="font-bold">Working (Map signal inline)</h2>
+      <h2 class="font-bold">Working</h2>
+      <p style={{ fontSize: '1rem' }}>
+        The parent component calculates some data inline and passes it to a child component.
+      </p>
       <div class="flex gap-2">
         <button class="px-2 py-1 border rounded" onClick$={load}>Load</button>
         <button class="px-2 py-1 border rounded" onClick$={add}>Add</button>
@@ -60,6 +63,10 @@ export const WorkingExample = component$(() => {
           <pre class="text-sm">{JSON.stringify({ size: itemsMapSig.value.size, order: layout.instanceOrder }, null, 2)}</pre>
         </div>
         <Child items={rootItems} />
+      </div>
+      <div class="rounded border border-neutral-700 p-3">
+        <h3 class="font-bold mb-2">Source: examples/working/index.tsx</h3>
+        <pre class="text-xs overflow-auto"><code>{workingSource}</code></pre>
       </div>
     </div>
   );

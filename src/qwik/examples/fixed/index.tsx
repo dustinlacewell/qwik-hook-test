@@ -2,6 +2,8 @@ import { component$, $ } from '@builder.io/qwik';
 import { Child, type Item } from '../../Child';
 import { calculateRootData } from './calculateRootData';
 import { useDemo } from '../../demoContext';
+import fixedSource from './index.tsx?raw';
+import fixedCalcSource from './calculateRootData.ts?raw';
 
 export const FixedExample = component$(() => {
   const { itemsMapSig, layout } = useDemo();
@@ -41,7 +43,13 @@ export const FixedExample = component$(() => {
 
   return (
     <div class="space-y-2 rounded border border-yellow-700 p-3">
-      <h2 class="font-bold text-yellow-400">RenamedHook (Plain hook, Map signal)</h2>
+      <h2 class="font-bold text-yellow-400">Fixed</h2>
+      <p style={{ fontSize: '1rem' }}>
+        Exact same code as broken example, simply rename `useCalculateDataBroken` to `calculateRootData`.
+      </p>
+      <p style={{ fontSize: '1rem' }}>
+        What the hell???
+      </p>
       <div class="flex gap-2">
         <button class="px-2 py-1 border rounded" onClick$={load}>Load</button>
         <button class="px-2 py-1 border rounded" onClick$={add}>Add</button>
@@ -54,6 +62,14 @@ export const FixedExample = component$(() => {
           <pre class="text-sm">{JSON.stringify({ size: itemsMapSig.value.size, order: layout.instanceOrder }, null, 2)}</pre>
         </div>
         <Child items={rootItems} />
+      </div>
+      <div class="rounded border border-neutral-700 p-3">
+        <h3 class="font-bold mb-2">Source: examples/fixed/index.tsx</h3>
+        <pre class="text-xs overflow-auto"><code>{fixedSource}</code></pre>
+      </div>
+      <div class="rounded border border-neutral-700 p-3">
+        <h3 class="font-bold mb-2">Source: examples/fixed/calculateRootData.ts</h3>
+        <pre class="text-xs overflow-auto"><code>{fixedCalcSource}</code></pre>
       </div>
     </div>
   );
