@@ -1,0 +1,16 @@
+{
+  "name": "qwik-hook-test",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@builder.io/qwik": "^1.17.1",
+    "@qwikdev/astro": "^0.8.2",
+    "astro": "^5.15.3"
+  }
+}
