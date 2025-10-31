@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 # build please?
 on:
   push:
-    branches: [main] # change if your default branch is different
+    branches: [master] # change if your default branch is different
   workflow_dispatch:
 
 permissions:
